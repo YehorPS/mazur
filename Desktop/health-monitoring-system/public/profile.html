@@ -1,0 +1,27 @@
+<!-- public/profile.html -->
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профіль пацієнта</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="profile-container">
+    <h1>Профіль пацієнта</h1>
+
+    <div id="patientInfo"></div>
+    <h2>Медичні картки</h2>
+    <div id="medicalRecord"></div>
+
+    <h3>Додати запис</h3>
+    <form id="addRecordForm">
+      <textarea id="doctorComment" placeholder="Коментар лікаря" required></textarea>
+      <button type="submit">Додати запис</button>
+    </form>
+  </div>
+
+  <script src="/js/profile.js"></script>
+</body>
+</html>

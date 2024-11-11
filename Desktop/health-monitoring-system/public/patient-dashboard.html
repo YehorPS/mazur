@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кабінет Пацієнта</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Кабінет пацієнта -->
+    <div class="patient-profile">
+      <h1>Пацієнт: <span id="patientName"></span></h1>
+      <img id="patientPhoto" src="/default-photo.jpg" alt="Фото пацієнта" width="150">
+      <p>Email: <span id="patientEmail"></span></p>
+      <p>Телефон: <span id="patientPhone"></span></p>
+      <p>Звання: <span id="patientRank"></span></p>
+
+      <!-- Кнопка для редагування профілю -->
+      <button id="editProfileBtn">Редагувати профіль</button>
+    </div>
+
+    <!-- Історія хвороб -->
+    <div class="medical-history">
+      <h2>Історія хвороб</h2>
+      <ul id="historyList"></ul>
+    </div>
+
+    <!-- Запис до лікаря -->
+    <div class="appointments">
+      <h2>Запис до лікаря</h2>
+      <ul id="doctorList"></ul>
+    </div>
+
+    <button onclick="window.location.href='/login.html'">Вихід</button>
+  </div>
+
+  <!-- Модальне вікно для редагування профілю -->
+  <div id="editProfileModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Редагувати профіль</h2>
+      <form id="editProfileForm">
+        <label for="editEmail">Email:</label>
+        <input type="email" id="editEmail">
+        <label for="editPhone">Телефон:</label>
+        <input type="text" id="editPhone">
+        <label for="editRank">Звання:</label>
+        <input type="text" id="editRank">
+        <label for="photoInput">Фото:</label>
+        <input type="file" id="photoInput">
+        <button type="submit">Зберегти зміни</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/patient-dashboard.js"></script>
+</body>
+</html>
