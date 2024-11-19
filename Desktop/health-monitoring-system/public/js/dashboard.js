@@ -15,33 +15,7 @@ window.onload = async () => {
   const editProfileBtn = document.getElementById('editProfileBtn');
   const editProfileModal = document.getElementById('editProfileModal');
   const editProfileCloseBtn = document.querySelector('#editProfileModal .close-btn');
-  const appointmentModal = document.getElementById('appointmentModal');
-  const appointmentCloseBtn = document.getElementById('appointmentCloseBtn');
   const calendarEl = document.getElementById('calendar');
-
-  // Відкриваємо модальне вікно для редагування профілю
-  editProfileBtn.onclick = function () {
-    editProfileModal.style.display = 'block';
-  };
-
-  // Закриваємо модальне вікно для редагування профілю
-  editProfileCloseBtn.onclick = function () {
-    editProfileModal.style.display = 'none';
-  };
-
-  // Закриваємо модальне вікно для запису
-  appointmentCloseBtn.onclick = function () {
-    appointmentModal.style.display = 'none';
-  };
-
-  // Закриваємо будь-яке модальне вікно, якщо користувач натискає за межами вікна
-  window.onclick = function (event) {
-    if (event.target === editProfileModal) {
-      editProfileModal.style.display = 'none';
-    } else if (event.target === appointmentModal) {
-      appointmentModal.style.display = 'none';
-    }
-  };
 
   // Завантаження даних лікаря та пацієнтів
   try {
@@ -57,7 +31,6 @@ window.onload = async () => {
       doctorName.textContent = data.doctor.fullName;
       doctorEmail.textContent = data.doctor.email;
       doctorPhone.textContent = data.doctor.phone || 'Не вказано';
-      doctorSpecialty.textContent = data.doctor.specialty || 'Не вказано';
       doctorPhoto.src = data.doctor.photo || '/default-photo.jpg';
 
       // Завантаження пацієнтів
@@ -132,6 +105,101 @@ window.onload = async () => {
     console.error('Помилка при завантаженні даних лікаря:', error);
   }
 
+  // Обробка кліку для відкриття модального вікна редагування профілю
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener('click', () => {
+      if (editProfileModal) {
+        const editFullNameInput = document.getElementById('editFullName');
+        const editEmailInput = document.getElementById('editEmail');
+        const editPhoneInput = document.getElementById('editPhone');
+
+        if (editFullNameInput && editEmailInput && editPhoneInput) {
+          editFullNameInput.value = doctorName.textContent || '';
+          editEmailInput.value = doctorEmail.textContent || '';
+          editPhoneInput.value = doctorPhone.textContent !== 'Не вказано' ? doctorPhone.textContent : '';
+
+          // Показуємо модальне вікно
+          editProfileModal.style.display = 'block';
+        } else {
+          console.error("Не вдалося знайти елементи для редагування профілю.");
+        }
+      }
+    });
+  }
+
+  // Закриваємо модальне вікно для редагування профілю
+  if (editProfileCloseBtn) {
+    editProfileCloseBtn.addEventListener('click', () => {
+      editProfileModal.style.display = 'none';
+    });
+  }
+  
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // Закриваємо будь-яке модальне вікно, якщо користувач натискає за межами вікна
+  window.onclick = function (event) {
+    if (event.target === editProfileModal) {
+      editProfileModal.style.display = 'none';
+    } else if (event.target === appointmentModal) {
+      appointmentModal.style.display = 'none';
+    }
+  };
+
+  document.getElementById('editProfileForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+  
+    const token = localStorage.getItem('authToken');
+    const fullName = document.getElementById('editFullName').value;
+    const email = document.getElementById('editEmail').value;
+    const phone = document.getElementById('editPhone').value;
+    const photoInput = document.getElementById('photoInput').files[0];
+  
+    let photoBase64 = null;
+    if (photoInput) {
+      photoBase64 = await convertToBase64(photoInput);
+    }
+  
+    // Формуємо об'єкт даних без specialty
+    const data = {
+      fullName,
+      email,
+      phone,
+      ...(photoBase64 && { photo: photoBase64 }), // Додаємо photo тільки, якщо воно є
+    };
+  
+    console.log("Початок оновлення профілю");
+    console.log("Нові дані:", data);
+  
+    try {
+      const response = await fetch('/api/doctor/update-profile', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        alert('Профіль успішно оновлено');
+        window.location.reload(); // Оновлюємо сторінку для відображення змін
+      } else {
+        console.error('Помилка сервера:', result.message);
+        alert(result.message || 'Помилка при оновленні профілю');
+      }
+    } catch (error) {
+      console.error('Помилка при оновленні профілю:', error);
+    }
+  });
+  
   // Функція для отримання записів до лікаря
   async function loadAppointments() {
     try {

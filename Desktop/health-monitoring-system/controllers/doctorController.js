@@ -121,7 +121,7 @@ exports.getAppointments = async (req, res) => {
 
 
 exports.updateProfile = async (req, res) => {
-  const { email, phone, specialty, photo } = req.body;
+  const { email, phone, photo, fullName } = req.body;  // Видалено поле specialty
 
   try {
     const doctor = await User.findById(req.user.id);
@@ -129,17 +129,21 @@ exports.updateProfile = async (req, res) => {
       return res.status(404).json({ message: 'Лікар не знайдений' });
     }
 
+    if (fullName) doctor.fullName = fullName;
     if (email) doctor.email = email;
     if (phone) doctor.phone = phone;
-    if (specialty) doctor.specialty = specialty;
     if (photo) doctor.photo = photo;
 
     await doctor.save();
     res.json({ message: 'Профіль успішно оновлено', doctor });
   } catch (error) {
+    console.error('Помилка при оновленні профілю:', error);
     res.status(500).json({ message: 'Помилка при оновленні профілю', error });
   }
 };
+
+
+
 exports.viewPatientRecord = async (req, res) => {
   try {
     const record = await MedicalRecord.findOne({ user: req.params.id });

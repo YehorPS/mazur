@@ -18,7 +18,7 @@ router.get('/list', doctorController.getDoctorList);
 
 router.post('/patient/:id/medical-record', authMiddleware.verifyToken, doctorController.createMedicalRecord);
 
-router.post('/update-profile', authMiddleware.verifyToken, doctorController.updateProfile); 
+router.put('/update-profile', authMiddleware.verifyToken, doctorController.updateProfile); 
 
 router.get('/appointments', authMiddleware.verifyToken, doctorController.getAppointments);
 
