@@ -5,27 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Кабінет Лікаря</title>
   <link rel="stylesheet" href="/css/dashboard.css">
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
 </head>
 <body>
   <div class="container">
     <div class="doctor-profile">
-      <h1>Лікар: <span id="doctorName"></span></h1>
-      <img id="doctorPhoto" src="/default-photo.jpg" alt="Фото лікаря" width="150">
-      <p>Email: <span id="doctorEmail"></span></p>
-      <p>Телефон: <span id="doctorPhone"></span></p>
-      <p>Спеціальність: <span id="doctorSpecialty"></span></p>
-
-      <!-- Кнопка для відкриття модального вікна редагування -->
+      <div class="doctor-info">
+        <img id="doctorPhoto" src="/default-photo.jpg" alt="Фото лікаря" width="150">
+        <div class="doctor-details">
+          <h2 id="doctorName">Лікар: ПІБ Лікаря</h2>
+          <p>Email: <span id="doctorEmail">email@example.com</span></p>
+          <p>Телефон: <span id="doctorPhone">380XXXXXXXXX</span></p>
+          <p>Спеціальність: <span id="doctorSpecialty">Спеціальність</span></p>
+        </div>
+      </div>
       <button id="editProfileBtn">Редагувати профіль</button>
     </div>
 
     <div class="patients">
       <h2>Пацієнти</h2>
-      <ul id="patientsList"></ul>
+      <table id="patientsTable" class="styled-table">
+        <thead>
+          <tr>
+            <th>ПІБ</th>
+            <th>Пошта</th>
+            <th>Номер телефону</th>
+            <th>Дії</th>
+          </tr>
+        </thead>
+        <tbody id="patientsList">
+        </tbody>
+      </table>
     </div>
 
     <button onclick="window.location.href='/login.html'">Вихід</button>
   </div>
+  <div id="calendar"></div>
+<!-- Модальне вікно для інформації про запис -->
+<div id="appointmentModal" class="modal">
+  <div class="modal-content">
+    <span id="appointmentCloseBtn" class="close-btn">&times;</span>
+    <div class="appointment-info">
+      <img id="appointmentPhoto" class="appointment-photo" src="/default-photo.jpg" alt="Фото пацієнта">
+      <h2 id="appointmentPatientName">Ім'я пацієнта</h2>
+      <p id="appointmentPhone">Телефон: (номер телефону)</p>
+      <p id="appointmentReason">Причина: (причина запису)</p>
+    </div>
+  </div>
+</div>
+
+
+
 
   <!-- Модальне вікно для редагування профілю -->
   <div id="editProfileModal" class="modal">
@@ -45,7 +75,9 @@
       </form>
     </div>
   </div>
-
+  
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+  
   <script src="js/dashboard.js"></script>
 </body>
 </html>

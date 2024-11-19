@@ -4,35 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Кабінет Пацієнта</title>
-  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/patient-dashboard.css">
 </head>
 <body>
   <div class="container">
     <!-- Кабінет пацієнта -->
     <div class="patient-profile">
-      <h1>Пацієнт: <span id="patientName"></span></h1>
-      <img id="patientPhoto" src="/default-photo.jpg" alt="Фото пацієнта" width="150">
-      <p>Email: <span id="patientEmail"></span></p>
-      <p>Телефон: <span id="patientPhone"></span></p>
-      <p>Звання: <span id="patientRank"></span></p>
-
-      <!-- Кнопка для редагування профілю -->
-      <button id="editProfileBtn">Редагувати профіль</button>
+      <h1><span id="patientName"></span></h1>
+      <img id="patientPhoto" src="/default-photo.jpg" alt="Фото пацієнта" class="profile-photo">
+      <div class="patient-details">
+        <p>Email: <span id="patientEmail"></span></p>
+        <p>Телефон: <span id="patientPhone"></span></p>
+        <p>Дата народження: <span id="patientDOB"></span></p>
+        <p>Звання: <span id="patientRank"></span></p>
+      </div>
+      <button id="editProfileBtn" class="edit-btn">Редагувати профіль</button>
     </div>
 
     <!-- Історія хвороб -->
     <div class="medical-history">
       <h2>Історія хвороб</h2>
-      <ul id="historyList"></ul>
+      <ul id="historyList" class="history-list"></ul>
     </div>
 
     <!-- Запис до лікаря -->
     <div class="appointments">
       <h2>Запис до лікаря</h2>
-      <ul id="doctorList"></ul>
+      <form id="appointmentForm" class="appointment-form">
+        <label for="doctorSelect">Оберіть лікаря:</label>
+        <select id="doctorSelect" required></select>
+        <label for="appointmentDate">Дата та час прийому:</label>
+        <input type="datetime-local" id="appointmentDate" required>
+        <label for="reason">Причина:</label>
+        <textarea id="reason" required></textarea>
+        <button type="submit" class="submit-btn">Записатися</button>
+      </form>
     </div>
 
-    <button onclick="window.location.href='/login.html'">Вихід</button>
+    <button onclick="window.location.href='/login.html'" class="logout-btn">Вихід</button>
   </div>
 
   <!-- Модальне вікно для редагування профілю -->
@@ -41,15 +50,17 @@
       <span class="close-btn">&times;</span>
       <h2>Редагувати профіль</h2>
       <form id="editProfileForm">
-        <label for="editEmail">Email:</label>
-        <input type="email" id="editEmail">
+        <label for="editFullName">Повне ім'я:</label>
+        <input type="text" id="editFullName">
         <label for="editPhone">Телефон:</label>
         <input type="text" id="editPhone">
+        <label for="editDOB">Дата народження:</label>
+        <input type="date" id="editDOB">
         <label for="editRank">Звання:</label>
         <input type="text" id="editRank">
         <label for="photoInput">Фото:</label>
         <input type="file" id="photoInput">
-        <button type="submit">Зберегти зміни</button>
+        <button type="submit" class="save-btn">Зберегти зміни</button>
       </form>
     </div>
   </div>

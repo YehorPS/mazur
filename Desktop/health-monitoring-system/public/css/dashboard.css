@@ -7,7 +7,7 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
 }
 
@@ -19,24 +19,49 @@ body {
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
 }
 
 /* Стилі для профілю лікаря */
 .doctor-profile {
-  background-color: #ecf0f1;
+  background-color: #ffffff;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 30px;
 }
 
-.doctor-profile img {
-  border-radius: 50%;
-  margin-bottom: 15px;
+.doctor-info {
+  display: flex;
+  align-items: center;
 }
 
-.doctor-profile p {
+.doctor-info img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin-right: 20px;
+  border: 3px solid #27ae60;
+}
+
+.doctor-details {
   font-size: 16px;
+  color: #333;
+}
+
+.doctor-details h2 {
+  margin: 0;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.doctor-details p {
   margin: 5px 0;
+  color: #555;
 }
 
 button {
@@ -54,50 +79,210 @@ button:hover {
   background-color: #2ecc71;
 }
 
-/* Модальне вікно */
+/* Стилі для мобільних пристроїв */
+@media (max-width: 768px) {
+  .doctor-profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .doctor-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+/* Стилі для профілю лікаря */
+.doctor-profile {
+  display: flex;
+  align-items: center;
+  background-color: #ecf0f1;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.doctor-profile img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin-right: 30px;
+}
+
+.doctor-profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.doctor-profile-info p {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #2ecc71;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Список пацієнтів */
+.patients {
+  margin-bottom: 30px;
+}
+
+.patients ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.patients li {
+  background: #f9f9f9;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.patients li:hover {
+  background-color: #ecf0f1;
+}
+
+/* Календар */
+#calendar {
+  margin-top: 50px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.fc-toolbar {
+  background-color: #ecf0f1;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+}
+
+.fc-view-container {
+  border-radius: 0 0 10px 10px;
+}
+
+.fc-daygrid-day {
+  transition: background-color 0.3s;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f0f3f4;
+}
+
+/* Модальне вікно для редагування профілю */
 .modal {
   display: none; /* Спочатку приховане */
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Темний фон */
+  background-color: rgba(0, 0, 0, 0.6); /* Темний фон */
 }
 
 .modal-content {
   background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border-radius: 10px;
-  width: 50%;
+  margin: 10% auto;
+  padding: 20px 40px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Покращена тінь */
 }
 
 .close-btn {
-  color: #aaa;
+  color: #999;
   font-size: 28px;
   font-weight: bold;
   position: absolute;
-  top: 10px;
-  right: 25px;
-  padding: 0 10px;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
 }
 
 .close-btn:hover,
 .close-btn:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+  color: #555;
 }
 
+.modal img {
+  border-radius: 50%;
+  margin-bottom: 15px;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+/* Модальне вікно для інформації про запис */
+#appointmentModal .modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#appointmentModal .appointment-photo {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+#appointmentModal .appointment-info h2 {
+  margin: 10px 0;
+  font-size: 1.8em;
+  color: #333;
+}
+
+#appointmentModal .appointment-info p {
+  font-size: 1em;
+  color: #666;
+  margin: 5px 0;
+}
+
+/* Поля вводу для редагування профілю */
 input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #3498db;
 }
 
 button[type="submit"] {
@@ -106,5 +291,55 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+/* Стилі для таблиці пацієнтів */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 1em;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+  background-color: #27ae60;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.view-profile-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-profile-btn:hover {
   background-color: #2980b9;
 }
