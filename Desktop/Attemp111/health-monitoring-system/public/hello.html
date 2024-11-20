@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступність і Зручність - Health Monitoring System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            animation: fadeIn 2s ease-in;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #1e90ff, #00bfff);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 5px 15px rgba(30, 144, 255, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 20px rgba(30, 144, 255, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0); 
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="icon">
+            <i class="fas fa-heartbeat"></i>
+        </div>
+        <h1>Ласкаво просимо до Health Monitoring System</h1>
+        <p>Доступний та зручний сервіс, який допомагає вам контролювати стан здоров'я, підтримувати зв'язок з лікарями та керувати всією інформацією у зручному форматі. Наш проект розроблений для забезпечення найвищого рівня якості та легкості використання, щоб ви могли зосередитись на головному — своєму здоров'ї.</p>
+        <div class="buttons">
+            <a href="#" onclick="window.location.href='/login'" class="btn">Вхід</a>
+            <a href="#" onclick="window.location.href='/register'" class="btn">Реєстрація</a>
+        </div>
+    </div>
+</body>
+</html>
