@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: healyj-monitoring-system
+    env: node
+    rootDir: desktop  # Вказуємо, що проект знаходиться в папці desktop
+    buildCommand: npm install
+    startCommand: node server.js

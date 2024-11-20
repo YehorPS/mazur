@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Логін</title>
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <div class="container">
+    <form id="loginForm">
+      <h2>Логін</h2>
+      <input type="email" id="email" placeholder="Введіть email" required>
+      <input type="password" id="password" placeholder="Введіть пароль" required>
+      <button type="submit">Увійти</button>
+      <div class="error-message" id="errorMessage"></div>
+      <p>Не маєте акаунта? <a href="/register.html">Зареєструйтесь</a></p>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+  <script type="module" src="/js/login.js"></script>
+
+
+</body>
+</html>

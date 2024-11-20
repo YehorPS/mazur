@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профіль Пацієнта</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body style="background-color: #F8F9FA; font-family: 'Roboto', sans-serif;">
+  <div class="container mt-5">
+    <div class="patient-profile card shadow-lg p-4 mb-5">
+      <div class="row align-items-center">
+        <div class="col-md-3 text-center">
+          <img id="patientPhoto" src="/default-photo.jpg" alt="Фото пацієнта" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+        </div>
+        <div class="col-md-9">
+          <h2 id="patientName" class="text-primary"><i class="fas fa-user"></i> Пацієнт: Ім'я Пацієнта</h2>
+          <p><strong><i class="fas fa-envelope"></i> Email:</strong> <span id="patientEmail">email@example.com</span></p>
+          <p><strong><i class="fas fa-phone"></i> Телефон:</strong> <span id="patientPhone">380XXXXXXXXX</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="medical-records card shadow-lg p-4 mb-5">
+      <h2 class="text-primary mb-4"><i class="fas fa-notes-medical"></i> Медичні Записи</h2>
+      <div id="noMedicalRecordsMessage" style="display: none;">Медичні записи відсутні.</div>
+      <div class="table-responsive">
+        <table id="medicalRecordsTable" class="table table-hover table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th>Діагноз</th>
+              <th>Лікування</th>
+              <th>Операції</th>
+              <th>Скарги</th>
+              <th>Вакцинації</th>
+              <th>Коментар Лікаря</th>
+            </tr>
+          </thead>
+          <tbody id="medicalRecordsTableBody">
+            <!-- Дані про медичні записи будуть завантажені через JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="create-medical-record card shadow-lg p-4">
+      <h2 class="text-primary mb-4"><i class="fas fa-plus"></i> Додати Медичну Картку</h2>
+      <form id="medicalRecordForm">
+        <div class="mb-3">
+          <label for="diagnosis" class="form-label">Діагноз:</label>
+          <input type="text" class="form-control" id="diagnosis">
+        </div>
+        <div class="mb-3">
+          <label for="treatment" class="form-label">Лікування:</label>
+          <input type="text" class="form-control" id="treatment">
+        </div>
+        <div class="mb-3">
+          <label for="surgery" class="form-label">Операції:</label>
+          <input type="text" class="form-control" id="surgery">
+        </div>
+        <div class="mb-3">
+          <label for="healthComplaints" class="form-label">Скарги:</label>
+          <input type="text" class="form-control" id="healthComplaints">
+        </div>
+        <div class="mb-3">
+          <label for="vaccinations" class="form-label">Вакцинації:</label>
+          <input type="text" class="form-control" id="vaccinations">
+        </div>
+        <button type="button" class="btn btn-primary w-100" id="createMedicalRecordButton"><i class="fas fa-save"></i> Додати Медичну Картку</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script src="/js/profile.js"></script>
+</body>
+</html>
