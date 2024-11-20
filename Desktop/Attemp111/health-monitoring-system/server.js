@@ -57,6 +57,9 @@ app.get('/profile', (req, res) => {
 app.use('/api/doctor', doctorRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/patient', patientRoutes);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'hello.html'));
+});
 // Стартуємо сервер
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
