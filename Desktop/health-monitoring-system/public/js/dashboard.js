@@ -31,6 +31,7 @@ window.onload = async () => {
       doctorName.textContent = data.doctor.fullName;
       doctorEmail.textContent = data.doctor.email;
       doctorPhone.textContent = data.doctor.phone || 'Не вказано';
+      doctorSpecialty.textContent = data.doctor.specialty || 'Не вказано';
       doctorPhoto.src = data.doctor.photo || '/default-photo.jpg';
 
       // Завантаження пацієнтів

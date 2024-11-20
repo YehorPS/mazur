@@ -3,13 +3,36 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['doctor', 'patient', 'admin'], required: true },
-  photo: { type: String, default: '/default-photo.jpg' }, // Фото користувача
-  phone: { type: String },  // Номер телефону
-  specialty: { type: String },  // Спеціальність лікаря
+  fullName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  phone: {
+    type: String,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ['doctor', 'patient', 'admin'],
+    required: true,
+  },
+  photo: {
+    type: String,
+  },
+  rank: {
+    type: String, // Наприклад: "солдат", "лікар", і т.д.
+  },
+  dateOfBirth: {
+    type: Date,
+  },
 });
 
 userSchema.pre('save', async function(next) {

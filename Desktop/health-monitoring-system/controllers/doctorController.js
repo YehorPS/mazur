@@ -30,14 +30,16 @@ const { ObjectId } = require('mongoose').Types;  // Підключаємо Objec
   
 
 
-exports.viewPatients = async (req, res) => {
-  try {
-    const patients = await User.find({ role: 'patient' });
-    res.json(patients);
-  } catch (error) {
-    res.status(500).json({ message: 'Помилка при отриманні пацієнтів', error });
-  }
-};
+  exports.viewPatients = async (req, res) => {
+    try {
+      // Витягуємо всіх пацієнтів
+      const patients = await User.find({ role: 'patient' }, 'fullName email phone');
+      res.json(patients);
+    } catch (error) {
+      res.status(500).json({ message: 'Помилка при отриманні пацієнтів', error });
+    }
+  };
+  
 
 
 exports.viewPatientProfile = async (req, res) => {
@@ -121,26 +123,30 @@ exports.getAppointments = async (req, res) => {
 
 
 exports.updateProfile = async (req, res) => {
-  const { email, phone, photo, fullName } = req.body;  // Видалено поле specialty
+  const { email, phone, fullName, dateOfBirth, rank, photo } = req.body;
 
   try {
-    const doctor = await User.findById(req.user.id);
-    if (!doctor || doctor.role !== 'doctor') {
-      return res.status(404).json({ message: 'Лікар не знайдений' });
+    // Оновлюємо дані в схемі User
+    const user = await User.findById(req.user.id);
+    if (!user || user.role !== 'doctor') {
+      return res.status(404).json({ message: 'Пацієнт не знайдений' });
     }
 
-    if (fullName) doctor.fullName = fullName;
-    if (email) doctor.email = email;
-    if (phone) doctor.phone = phone;
-    if (photo) doctor.photo = photo;
+    // Оновлюємо поля профілю користувача
+    if (email) user.email = email;
+    if (phone) user.phone = phone;
+    if (fullName) user.fullName = fullName;
+    if (dateOfBirth) user.dateOfBirth = dateOfBirth;
+    if (rank) user.rank = rank;
+    if (photo) user.photo = photo;
 
-    await doctor.save();
-    res.json({ message: 'Профіль успішно оновлено', doctor });
+    await user.save();
+    res.json({ message: 'Профіль успішно оновлено', user });
   } catch (error) {
-    console.error('Помилка при оновленні профілю:', error);
     res.status(500).json({ message: 'Помилка при оновленні профілю', error });
   }
 };
+
 
 
 
@@ -177,7 +183,7 @@ exports.createMedicalRecord = async (req, res) => {
 
     // Перевіряємо, чи існує лікар та його повне ім'я
     const doctorName = req.user && req.user.fullName ? req.user.fullName : 'Лікар (ім\'я не знайдено)';
-
+    
     if (record) {
       // Якщо медичний запис знайдено, додаємо нові значення до масивів
       if (diagnoses) {
@@ -197,7 +203,7 @@ exports.createMedicalRecord = async (req, res) => {
       }
 
       // Додаємо новий коментар лікаря, використовуючи `req.user.fullName`
-      record.doctorComments.push(`Запис створено лікарем ${doctorName}`);
+      record.doctorComments.push(` ${doctorName} `);
 
       // Зберегти оновлений запис
       await record.save();

@@ -70,12 +70,10 @@ const createPatientProfile = async (req, res) => {
     const { fullName, phone, dateOfBirth, rank, photo } = req.body;
     const userId = req.user.id;
 
-    
     const existingProfile = await PatientProfile.findOne({ userId });
     if (existingProfile) {
       return res.status(400).json({ message: 'Профіль для цього користувача вже існує' });
     }
-
     const newProfile = new PatientProfile({
       userId,
       fullName,
@@ -85,7 +83,6 @@ const createPatientProfile = async (req, res) => {
       photo,
     });
     await newProfile.save();
-
     res.status(201).json(newProfile);
   } catch (error) {
     console.error('Помилка при створенні профілю пацієнта:', error);
@@ -95,23 +92,51 @@ const createPatientProfile = async (req, res) => {
 
 const updatePatientProfile = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { fullName, phone, dateOfBirth, rank } = req.body;
+    const patientId = req.user.id; // Або отримайте patientId із запиту, якщо інше джерело
+    const { fullName, phone, email, dateOfBirth, rank, photo } = req.body;
 
-    const updatedProfile = await PatientProfile.findOneAndUpdate(
-      { userId },
-      { fullName, phone, dateOfBirth, rank },
-      { new: true }
-    );
+    // Оновлення профілю пацієнта в PatientProfile
+    let patientProfile = await PatientProfile.findOne({ userId: patientId });
 
-    if (!updatedProfile) {
-      return res.status(404).json({ message: 'Профіль пацієнта не знайдено' });
+    if (!patientProfile) {
+      // Якщо профіль пацієнта не існує, створіть новий
+      patientProfile = new PatientProfile({
+        userId: patientId,
+        fullName,
+        phone,
+        dateOfBirth,
+        rank,
+        photo
+      });
+    } else {
+      // Оновіть існуючий профіль
+      console.log('Фото до оновлення:', patientProfile.photo);
+      patientProfile.fullName = fullName;
+      patientProfile.phone = phone;
+      patientProfile.dateOfBirth = dateOfBirth;
+      patientProfile.rank = rank;
+      if (photo) {
+        patientProfile.photo = photo; // Тільки якщо нове фото надано, оновлюємо його
+      }
+      console.log('Фото після оновлення:', patientProfile.photo);
     }
 
-    res.status(200).json(updatedProfile);
+    await patientProfile.save();
+
+    // Оновлення профілю пацієнта в User
+    let user = await User.findById(patientId);
+    if (user) {
+      if (fullName) user.fullName = fullName;
+      if (phone) user.phone = phone;
+      if (email) user.email = email;
+      if (photo) user.photo = photo;
+      await user.save();
+    }
+
+    res.status(200).json({ message: 'Профіль пацієнта успішно оновлено', patientProfile });
   } catch (error) {
     console.error('Помилка при оновленні профілю пацієнта:', error);
-    res.status(500).json({ message: 'Помилка при оновленні профілю пацієнта' });
+    res.status(500).json({ message: 'Помилка при оновленні профілю пацієнта', error });
   }
 };
 
