@@ -1,0 +1,270 @@
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+
+.container {
+  width: 80%;
+  max-width: 1200px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+}
+
+
+.doctor-profile {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.doctor-info {
+  display: flex;
+  align-items: center;
+}
+
+.doctor-info img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin-right: 20px;
+  border: 3px solid #27ae60;
+}
+
+.doctor-details {
+  font-size: 16px;
+  color: #333;
+}
+
+.doctor-details h2 {
+  margin: 0;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.doctor-details p {
+  margin: 5px 0;
+  color: #555;
+}
+
+
+button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2ecc71;
+}
+
+
+@media (max-width: 768px) {
+  .doctor-profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .doctor-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+
+.patients {
+  margin-bottom: 30px;
+}
+
+.patients ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.patients li {
+  background: #f9f9f9;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.patients li:hover {
+  background-color: #ecf0f1;
+}
+
+
+#calendar {
+  margin-top: 50px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.fc-toolbar {
+  background-color: #ecf0f1;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+}
+
+.fc-view-container {
+  border-radius: 0 0 10px 10px;
+}
+
+.fc-daygrid-day {
+  transition: background-color 0.3s;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f0f3f4;
+}
+
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1050 !important; 
+}
+
+.modal-backdrop.show {
+  opacity: 0.2 !important; 
+  z-index: 1040 !important;
+}
+
+.modal-header, .modal-body, .modal-footer {
+  padding: 20px;
+}
+
+.close-btn {
+  color: #999;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: #555;
+}
+
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #3498db;
+}
+
+button[type="submit"] {
+  background-color: #3498db;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 1em;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+  background-color: #27ae60;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.view-profile-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-profile-btn:hover {
+  background-color: #2980b9;
+}
+
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.5) !important; 
+  z-index: 1050;
+}
+
+.modal-backdrop {
+  opacity: 0.4 !important;
+  z-index: 1040 !important; 
+}
