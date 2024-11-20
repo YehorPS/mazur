@@ -46,11 +46,16 @@ app.use(errorMiddleware);
 app.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'hello.html'));
+});
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'hello.html'));
+});
 app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
