@@ -1,4 +1,4 @@
-// models/User.js
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   rank: {
-    type: String, // Наприклад: "солдат", "лікар", і т.д.
+    type: String, 
   },
   dateOfBirth: {
     type: Date,

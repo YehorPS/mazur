@@ -37,10 +37,10 @@ const getPatientProfile = async (req, res) => {
 };
 const createAppointment = async (req, res) => {
   try {
-    const patientId = req.user.id;  // ID пацієнта береться з токену, який вже розшифрований
-    const { doctorId, appointmentDate, reason } = req.body;  // Отримуємо дані з тіла запиту
+    const patientId = req.user.id;  
+    const { doctorId, appointmentDate, reason } = req.body; 
 
-    // Додаємо логування, щоб переконатися, що всі значення отримані
+   
     console.log('Дані, отримані з тіла запиту:', req.body);
     console.log('ID пацієнта з токену:', patientId);
 
@@ -48,15 +48,15 @@ const createAppointment = async (req, res) => {
       return res.status(400).json({ message: 'Будь ласка, заповніть усі поля' });
     }
 
-    // Створюємо новий запис
+
     const appointment = new Appointment({
-      patientId,   // Додаємо ID пацієнта автоматично
-      doctorId,    // ID лікаря приходить з форми
-      dateTime: appointmentDate, // Переконайтеся, що ви використовуєте ім'я поля, яке відповідає схемі
+      patientId,   
+      doctorId,   
+      dateTime: appointmentDate, 
       reason,
     });
 
-    // Зберігаємо запис у базі даних
+    
     await appointment.save();
     res.status(201).json({ message: 'Запис до лікаря успішно створено', appointment });
   } catch (error) {
@@ -92,14 +92,14 @@ const createPatientProfile = async (req, res) => {
 
 const updatePatientProfile = async (req, res) => {
   try {
-    const patientId = req.user.id; // Або отримайте patientId із запиту, якщо інше джерело
+    const patientId = req.user.id; 
     const { fullName, phone, email, dateOfBirth, rank, photo } = req.body;
 
-    // Оновлення профілю пацієнта в PatientProfile
+   
     let patientProfile = await PatientProfile.findOne({ userId: patientId });
 
     if (!patientProfile) {
-      // Якщо профіль пацієнта не існує, створіть новий
+     
       patientProfile = new PatientProfile({
         userId: patientId,
         fullName,
@@ -109,21 +109,21 @@ const updatePatientProfile = async (req, res) => {
         photo
       });
     } else {
-      // Оновіть існуючий профіль
+      
       console.log('Фото до оновлення:', patientProfile.photo);
       patientProfile.fullName = fullName;
       patientProfile.phone = phone;
       patientProfile.dateOfBirth = dateOfBirth;
       patientProfile.rank = rank;
       if (photo) {
-        patientProfile.photo = photo; // Тільки якщо нове фото надано, оновлюємо його
+        patientProfile.photo = photo; 
       }
       console.log('Фото після оновлення:', patientProfile.photo);
     }
 
     await patientProfile.save();
 
-    // Оновлення профілю пацієнта в User
+
     let user = await User.findById(patientId);
     if (user) {
       if (fullName) user.fullName = fullName;

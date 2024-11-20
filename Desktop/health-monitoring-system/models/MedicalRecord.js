@@ -1,4 +1,4 @@
-// models/MedicalRecord.js
+
 const mongoose = require('mongoose');
 
 const medicalRecordSchema = new mongoose.Schema({

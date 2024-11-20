@@ -1,11 +1,10 @@
-let medicalRecordsLoaded = false; // Флаг, що показує, чи таблиця вже була заповнена
-
+let medicalRecordsLoaded = false; 
 window.onload = async () => {
-  await loadPatientData(); // Завантажуємо дані про пацієнта
-  startPollingPatientData(); // Розпочинаємо періодичне опитування для оновлення даних про пацієнта
+  await loadPatientData(); 
+  startPollingPatientData(); 
 };
 
-// Завантаження інформації про пацієнта і його медичні записи
+
 async function loadPatientData() {
   const token = localStorage.getItem('authToken');
   if (!token) {
@@ -13,12 +12,12 @@ async function loadPatientData() {
     return;
   }
 
-  // Отримуємо ID пацієнта з параметра URL
+ 
   const urlParams = new URLSearchParams(window.location.search);
   const patientId = urlParams.get('id');
 
   try {
-    // Отримуємо інформацію про пацієнта разом із медичними записами
+    
     const response = await fetch(`/api/doctor/patient/${patientId}`, {
       method: 'GET',
       headers: {
@@ -30,17 +29,17 @@ async function loadPatientData() {
     console.log("Дані про пацієнта, отримані з сервера:", data);
 
     if (response.ok) {
-      // Оновлюємо дані пацієнта на сторінці
+      
       document.getElementById('patientName').textContent = data.patient.fullName;
       document.getElementById('patientEmail').textContent = data.patient.email;
       document.getElementById('patientPhone').textContent = data.patient.phone || 'Не вказано';
       document.getElementById('patientPhoto').src = data.patient.photo || '/default-photo.jpg';
 
-      // Виводимо медичну картку пацієнта
+      
       if (data.medicalRecords && data.medicalRecords.length > 0) {
         if (!medicalRecordsLoaded) {
           renderMedicalRecords(data.medicalRecords);
-          medicalRecordsLoaded = true; // Флаг, що показує, що таблиця вже заповнена
+          medicalRecordsLoaded = true;
         }
       } else {
         document.getElementById('noMedicalRecordsMessage').style.display = 'block';
@@ -53,14 +52,14 @@ async function loadPatientData() {
   }
 }
 
-// Функція для початку періодичного опитування серверу
+
 function startPollingPatientData() {
   setInterval(async () => {
-    await loadPatientData(); // Перевантажуємо дані про пацієнта
-  }, 5000); // Опитуємо кожні 5 секунд (5000 мс)
+    await loadPatientData(); 
+  }, 5000); 
 }
 
-// Створення медичної картки
+
 const createMedicalRecord = async () => {
   const token = localStorage.getItem('authToken');
   const patientId = new URLSearchParams(window.location.search).get('id');
@@ -90,10 +89,10 @@ const createMedicalRecord = async () => {
     if (response.ok) {
       alert('Медичну картку успішно додано');
 
-      // Оновлюємо таблицю після додавання нового запису
+      
       await loadPatientData();
 
-      // Очищуємо форму після додавання
+      
       clearMedicalRecordForm();
     } else {
       alert(data.message || 'Щось пішло не так');
@@ -103,23 +102,23 @@ const createMedicalRecord = async () => {
   }
 };
 
-// Функція для рендеру всіх медичних записів при завантаженні сторінки або оновленні
+
 function renderMedicalRecords(medicalRecords) {
   const tableBody = document.getElementById('medicalRecordsTableBody');
-  tableBody.innerHTML = ''; // Очищаємо таблицю перед оновленням
+  tableBody.innerHTML = ''; 
 
-  // Додаємо всі записи до таблиці
+  
   medicalRecords.forEach(record => {
     const rows = createMedicalRecordRows(record);
     rows.forEach(row => tableBody.appendChild(row));
   });
 }
 
-// Функція для створення HTML рядків таблиці медичної картки
+
 function createMedicalRecordRows(record) {
   const rows = [];
 
-  // Перебираємо всі значення масивів та створюємо окремий рядок для кожного запису
+ 
   const length = Math.max(
     record.diagnoses.length,
     record.treatments.length,
@@ -154,7 +153,7 @@ function createMedicalRecordRows(record) {
   return rows;
 }
 
-// Очищення форми після додавання медичної картки
+
 function clearMedicalRecordForm() {
   document.getElementById('diagnosis').value = '';
   document.getElementById('treatment').value = '';
@@ -163,5 +162,5 @@ function clearMedicalRecordForm() {
   document.getElementById('vaccinations').value = '';
 }
 
-// Додаємо обробник для кнопки створення медичної картки
+
 document.getElementById('createMedicalRecordButton').addEventListener('click', createMedicalRecord);

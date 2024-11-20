@@ -11,16 +11,16 @@ document.getElementById('editProfileForm').addEventListener('submit', async func
       const reader = new FileReader();
       reader.onload = async function(e) {
         photoData = e.target.result;
-        // Тепер ми маємо фото в base64 форматі
+        
         await sendProfileData(fullName, email, password, photoData);
       };
-      reader.readAsDataURL(photo); // Читаємо фото
+      reader.readAsDataURL(photo); 
     } else {
       await sendProfileData(fullName, email, password, photoData);
     }
   });
   
-  // Функція для відправки даних на сервер
+  
   async function sendProfileData(fullName, email, password, photoData) {
     const token = localStorage.getItem('authToken');
     
@@ -38,7 +38,7 @@ document.getElementById('editProfileForm').addEventListener('submit', async func
   
       if (response.ok) {
         alert('Профіль успішно оновлено');
-        // Можна оновити дані на сторінці або перезавантажити її
+        
         window.location.href = '/profile.html';
       } else {
         alert(data.message || 'Помилка при оновленні профілю');

@@ -2,20 +2,20 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const MedicalRecord = require('../models/MedicalRecord');
 const Appointment = require('../models/Appointment');
-const { ObjectId } = require('mongoose').Types;  // Підключаємо ObjectId з mongoose
+const { ObjectId } = require('mongoose').Types;  
 
 
-  // Для серверного декодування токену
+  
 
   exports.dashboard = async (req, res) => {
-    const token = req.headers['authorization']?.split(' ')[1];  // Отримуємо токен з заголовка
+    const token = req.headers['authorization']?.split(' ')[1];  
     if (!token) {
       return res.status(403).json({ message: 'Токен не надано' });
     }
   
     try {
-      const decodedToken = jwt.verify(token, 'secretKey');  // Перевіряємо та декодуємо токен
-      const doctorId = decodedToken.id;  // Отримуємо ID лікаря з токену
+      const decodedToken = jwt.verify(token, 'secretKey');  
+      const doctorId = decodedToken.id;  
       const doctor = await User.findById(doctorId);
   
       if (!doctor || doctor.role !== 'doctor') {
@@ -32,7 +32,7 @@ const { ObjectId } = require('mongoose').Types;  // Підключаємо Objec
 
   exports.viewPatients = async (req, res) => {
     try {
-      // Витягуємо всіх пацієнтів
+      
       const patients = await User.find({ role: 'patient' }, 'fullName email phone');
       res.json(patients);
     } catch (error) {
@@ -75,7 +75,7 @@ exports.updatePatientProfileByDoctor = async (req, res) => {
       return res.status(404).json({ message: 'Пацієнт не знайдений' });
     }
 
-    // Оновлення полів
+    
     if (fullName) patient.fullName = fullName;
     if (phone) patient.phone = phone;
     if (email) patient.email = email;
@@ -99,14 +99,14 @@ exports.getDoctorList = async (req, res) => {
 
 exports.getAppointments = async (req, res) => {
   try {
-    // Перевірка, чи є користувач авторизованим та має відповідний ID
+    
     const doctorId = req.user.id;
 
     if (!doctorId) {
       return res.status(400).json({ message: 'Не вдалося знайти ідентифікатор лікаря' });
     }
 
-    // Отримуємо записи, де доктор відповідає ідентифікатору
+    
     const appointments = await Appointment.find({ doctorId }).populate('patientId', 'fullName email phone');
 
     if (!appointments.length) {
@@ -126,13 +126,13 @@ exports.updateProfile = async (req, res) => {
   const { email, phone, fullName, dateOfBirth, rank, photo } = req.body;
 
   try {
-    // Оновлюємо дані в схемі User
+    
     const user = await User.findById(req.user.id);
     if (!user || user.role !== 'doctor') {
       return res.status(404).json({ message: 'Пацієнт не знайдений' });
     }
 
-    // Оновлюємо поля профілю користувача
+    
     if (email) user.email = email;
     if (phone) user.phone = phone;
     if (fullName) user.fullName = fullName;
@@ -165,27 +165,27 @@ exports.createMedicalRecord = async (req, res) => {
   try {
     const { diagnoses, treatments, surgeries, healthComplaints, vaccinations } = req.body;
 
-    // Логування для перевірки вхідних даних
+    
     console.log("Шукаємо медичний запис для користувача з ID:", req.params.id);
 
-    // Знайти існуючу медичну картку пацієнта за ID користувача
+   
     let record = await MedicalRecord.findOne({ user: req.params.id });
 
-    // Логування результатів пошуку
+    
     console.log("Знайдений запис:", record);
 
-    // Логування для перевірки інформації про лікаря
+    
     if (req.user) {
       console.log("Інформація про лікаря:", req.user.fullName);
     } else {
       console.log("Інформація про лікаря не знайдена в `req.user`");
     }
 
-    // Перевіряємо, чи існує лікар та його повне ім'я
+    
     const doctorName = req.user && req.user.fullName ? req.user.fullName : 'Лікар (ім\'я не знайдено)';
     
     if (record) {
-      // Якщо медичний запис знайдено, додаємо нові значення до масивів
+      
       if (diagnoses) {
         record.diagnoses.push(diagnoses);
       }
@@ -202,14 +202,14 @@ exports.createMedicalRecord = async (req, res) => {
         record.vaccinations.push(vaccinations);
       }
 
-      // Додаємо новий коментар лікаря, використовуючи `req.user.fullName`
+      
       record.doctorComments.push(` ${doctorName} `);
 
-      // Зберегти оновлений запис
+      
       await record.save();
       res.status(200).json({ message: 'Запис успішно оновлено', record });
     } else {
-      // Якщо запис не знайдено, створюємо новий
+      
       record = new MedicalRecord({
         user: req.params.id,
         diagnoses: diagnoses ? [diagnoses] : [],
@@ -232,8 +232,8 @@ exports.createMedicalRecord = async (req, res) => {
 
 exports.getAllDoctors = async (req, res) => {
   try {
-    const doctors = await User.find({ role: 'doctor' });  // Фільтруємо за роллю "doctor"
-    res.json(doctors);  // Відправляємо список лікарів
+    const doctors = await User.find({ role: 'doctor' });  
+    res.json(doctors); 
   } catch (error) {
     res.status(500).json({ message: 'Помилка при отриманні лікарів', error });
   }

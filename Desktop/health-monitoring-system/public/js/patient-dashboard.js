@@ -1,7 +1,7 @@
 window.onload = async () => {
   const token = localStorage.getItem('authToken');
   if (!token) {
-    window.location.href = '/login.html'; // Якщо токен не знайдено, перенаправляємо на сторінку входу
+    window.location.href = '/login.html';
     return;
   }
 
@@ -14,32 +14,19 @@ window.onload = async () => {
     });
     if (response.status === 404) {
       console.log('Профіль не знайдено, відкриваємо модальне вікно створення профілю.');
-      const createProfileModal = document.getElementById('createProfileModal');
-      if (createProfileModal) {
-        createProfileModal.style.display = 'block';
-    
-        // Додаємо обробник події для форми створення профілю
-        document.getElementById('createProfileForm').addEventListener('submit', async (e) => {
-          e.preventDefault();
-          await createProfile();
-        });
-      } else {
-        console.error('Модальне вікно для створення профілю не знайдено.');
-      }
+      const createProfileModal = new bootstrap.Modal(document.getElementById('createProfileModal'));
+      createProfileModal.show();
       return;
     }
-    
 
     const data = await response.json();
     if (response.ok) {
-      // Заповнюємо дані профілю
       document.getElementById('patientName').textContent = data.fullName;
-      document.getElementById('patientEmail').textContent = data.user.email; // Переконайтеся, що використовується шлях до email користувача
+      document.getElementById('patientEmail').textContent = data.user.email;
       document.getElementById('patientPhone').textContent = data.phone || 'Не вказано';
       document.getElementById('patientDOB').textContent = data.dateOfBirth ? new Date(data.dateOfBirth).toLocaleDateString() : 'Не вказано';
       document.getElementById('patientRank').textContent = data.rank || 'Не вказано';
       document.getElementById('patientPhoto').src = data.photo || '/default-photo.jpg';
-      // Зберігаємо patientId в локальному сховищі для подальшого використання
       localStorage.setItem('patientId', data._id);
     } else {
       alert(data.message || 'Помилка під час завантаження профілю');
@@ -49,7 +36,6 @@ window.onload = async () => {
   }
   await loadDoctors();
 
-
   const appointmentForm = document.getElementById('appointmentForm');
   appointmentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -57,46 +43,21 @@ window.onload = async () => {
   });
 };
 
+
 document.getElementById('editProfileBtn').addEventListener('click', () => {
-  const modal = document.getElementById('editProfileModal');
-  if (modal) {
-    // Заповнюємо поля модальної форми редагування
-    document.getElementById('editFullName').value = document.getElementById('patientName').textContent;
-    document.getElementById('editPhone').value = document.getElementById('patientPhone').textContent;
-
-    const dobText = document.getElementById('patientDOB').textContent;
-
-    let parsedDate;
-    if (dobText !== 'Не вказано') {
-      parsedDate = new Date(dobText);
-
-      if (!isNaN(parsedDate.getTime())) {
-        document.getElementById('editDOB').value = parsedDate.toISOString().split('T')[0];
-      } else {
-        console.error("Невірний формат дати:", dobText);
-        document.getElementById('editDOB').value = ''; // Залишаємо порожнім, якщо дата невірна
-      }
-    } else {
-      document.getElementById('editDOB').value = ''; // Якщо дата не вказана
-    }
-
-    document.getElementById('editRank').value = document.getElementById('patientRank').textContent;
-
-    // Показуємо модальне вікно
-    modal.style.display = 'block';
-  }
+  const editProfileModal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+  editProfileModal.show();
 });
 
-   
 
-// Закриття модального вікна
 document.querySelectorAll('.close-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const modals = document.querySelectorAll('.modal');
     modals.forEach(modal => modal.style.display = 'none');
   });
 });
-// Функція створення профілю
+
+
 async function createProfile() {
   const token = localStorage.getItem('authToken');
   const fullName = document.getElementById('createFullName').value;
@@ -133,7 +94,7 @@ async function createProfile() {
     const result = await response.json();
     if (response.ok) {
       alert('Профіль успішно створено');
-      window.location.reload(); // Оновлюємо сторінку для відображення змін
+      window.location.reload();
     } else {
       console.error('Помилка сервера:', result.message);
       alert(result.message || 'Щось пішло не так');
@@ -143,7 +104,7 @@ async function createProfile() {
   }
 }
 
-// Оновлення профілю
+
 document.getElementById('editProfileForm').addEventListener('submit', async (event) => {
   event.preventDefault();
   const token = localStorage.getItem('authToken');
@@ -176,7 +137,7 @@ document.getElementById('editProfileForm').addEventListener('submit', async (eve
     const result = await response.json();
     if (response.ok) {
       alert('Профіль успішно оновлено');
-      window.location.reload(); // Оновлюємо сторінку для відображення змін
+      window.location.reload();
     } else {
       alert(result.message || 'Помилка при оновленні профілю');
     }
@@ -185,7 +146,7 @@ document.getElementById('editProfileForm').addEventListener('submit', async (eve
   }
 });
 
-// Функція для конвертації файлу у base64
+
 const convertToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -195,7 +156,7 @@ const convertToBase64 = (file) => {
   });
 };
 
-// Завантаження списку лікарів для вибору
+
 async function loadDoctors() {
   const token = localStorage.getItem('authToken');
 
@@ -225,11 +186,10 @@ async function loadDoctors() {
 
 async function createAppointment() {
   const token = localStorage.getItem('authToken');
-  const doctorId = document.getElementById('doctorSelect').value;  // Лікар ID
-  const appointmentDate = document.getElementById('appointmentDate').value;  // Дата та час прийому
-  const reason = document.getElementById('reason').value;  // Причина прийому
+  const doctorId = document.getElementById('doctorSelect').value;
+  const appointmentDate = document.getElementById('appointmentDate').value;
+  const reason = document.getElementById('reason').value;
 
-  // Додаємо логування для перевірки значень
   console.log("Лікар ID:", doctorId);
   console.log("Дата прийому:", appointmentDate);
   console.log("Причина:", reason);
@@ -256,7 +216,7 @@ async function createAppointment() {
     const data = await response.json();
     if (response.ok) {
       alert('Запис успішно створено');
-      window.location.reload();  // Перезавантаження сторінки для відображення нових даних
+      window.location.reload();
     } else {
       console.error('Помилка сервера:', data.message);
       alert(data.message || 'Щось пішло не так');
@@ -265,9 +225,3 @@ async function createAppointment() {
     console.error('Помилка при створенні запису:', error);
   }
 }
-
-
-
-
-
-

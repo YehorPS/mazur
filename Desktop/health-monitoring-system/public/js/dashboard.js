@@ -1,11 +1,10 @@
 window.onload = async () => {
   const token = localStorage.getItem('authToken');
   if (!token) {
-    window.location.href = '/login.html'; // Якщо токен не знайдено, перенаправляємо на сторінку входу
+    window.location.href = '/login.html'; 
     return;
   }
 
-  // Отримуємо елементи для оновлення на сторінці
   const doctorName = document.getElementById('doctorName');
   const doctorEmail = document.getElementById('doctorEmail');
   const doctorPhone = document.getElementById('doctorPhone');
@@ -14,10 +13,9 @@ window.onload = async () => {
   const patientsTable = document.getElementById('patientsTable');
   const editProfileBtn = document.getElementById('editProfileBtn');
   const editProfileModal = document.getElementById('editProfileModal');
-  const editProfileCloseBtn = document.querySelector('#editProfileModal .close-btn');
   const calendarEl = document.getElementById('calendar');
 
-  // Завантаження даних лікаря та пацієнтів
+  
   try {
     const response = await fetch('/api/doctor/dashboard', {
       headers: {
@@ -27,44 +25,41 @@ window.onload = async () => {
 
     const data = await response.json();
     if (response.ok) {
-      // Оновлюємо дані на сторінці лікаря
+      
       doctorName.textContent = data.doctor.fullName;
       doctorEmail.textContent = data.doctor.email;
       doctorPhone.textContent = data.doctor.phone || 'Не вказано';
       doctorSpecialty.textContent = data.doctor.specialty || 'Не вказано';
       doctorPhoto.src = data.doctor.photo || '/default-photo.jpg';
 
-      // Завантаження пацієнтів
+      
       const patientsResponse = await fetch('/api/doctor/patients', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
       const patientsData = await patientsResponse.json();
       if (patientsResponse.ok) {
-        // Створення заголовку таблиці
-        const tableHeader = `
-          <tr>
-            <th>ПІБ</th>
-            <th>Пошта</th>
-            <th>Номер телефону</th>
-            <th>Дія</th>
-          </tr>
+        patientsTable.innerHTML = `
+          <thead>
+            <tr>
+              <th>ПІБ</th>
+              <th>Пошта</th>
+              <th>Номер телефону</th>
+              <th>Дія</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${patientsData.map(patient => `
+              <tr>
+                <td>${patient.fullName}</td>
+                <td>${patient.email}</td>
+                <td>${patient.phone || 'Не вказано'}</td>
+                <td><button class="view-profile-btn btn btn-outline-primary" data-id="${patient._id}">Переглянути профіль</button></td>
+              </tr>
+            `).join('')}
+          </tbody>
         `;
-        patientsTable.innerHTML = tableHeader;
 
-        // Додавання даних пацієнтів до таблиці
-        patientsData.forEach(patient => {
-          const tableRow = document.createElement('tr');
-          tableRow.innerHTML = `
-            <td>${patient.fullName}</td>
-            <td>${patient.email}</td>
-            <td>${patient.phone || 'Не вказано'}</td>
-            <td><button class="view-profile-btn" data-id="${patient._id}">Переглянути профіль</button></td>
-          `;
-          patientsTable.appendChild(tableRow);
-        });
-
-        // Додавання обробника події для кнопок перегляду профілю
         document.querySelectorAll('.view-profile-btn').forEach(button => {
           button.addEventListener('click', (e) => {
             const patientId = e.target.getAttribute('data-id');
@@ -73,7 +68,7 @@ window.onload = async () => {
         });
       }
 
-      // Завантаження записів до лікаря
+      
       const appointments = await loadAppointments();
       if (calendarEl) {
         const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -86,19 +81,19 @@ window.onload = async () => {
           },
           events: appointments,
           eventClick: function (info) {
-            // Відкриваємо модальне вікно при натисканні на запис
             const eventData = info.event.extendedProps;
             document.getElementById('appointmentPatientName').textContent = `Пацієнт: ${eventData.patientFullName}`;
             document.getElementById('appointmentPhone').textContent = `Телефон: ${eventData.patientPhone}`;
             document.getElementById('appointmentReason').textContent = `Причина: ${eventData.reason}`;
             document.getElementById('appointmentPhoto').src = eventData.patientPhoto || '/default-photo.jpg';
 
-            appointmentModal.style.display = 'block';
+            const bootstrapModal = new bootstrap.Modal(document.getElementById('appointmentModal'));
+            bootstrapModal.show();
           }
         });
-
         calendar.render();
       }
+
     } else {
       alert(data.message || 'Щось пішло не так');
     }
@@ -106,52 +101,38 @@ window.onload = async () => {
     console.error('Помилка при завантаженні даних лікаря:', error);
   }
 
-  // Обробка кліку для відкриття модального вікна редагування профілю
-  if (editProfileBtn) {
-    editProfileBtn.addEventListener('click', () => {
-      if (editProfileModal) {
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const editProfileModalElement = document.getElementById('editProfileModal');
+    const editProfileModal = new bootstrap.Modal(editProfileModalElement);
+  
+    
+    if (editProfileBtn) {
+      editProfileBtn.addEventListener('click', () => {
         const editFullNameInput = document.getElementById('editFullName');
         const editEmailInput = document.getElementById('editEmail');
         const editPhoneInput = document.getElementById('editPhone');
-
+  
         if (editFullNameInput && editEmailInput && editPhoneInput) {
+         
           editFullNameInput.value = doctorName.textContent || '';
           editEmailInput.value = doctorEmail.textContent || '';
           editPhoneInput.value = doctorPhone.textContent !== 'Не вказано' ? doctorPhone.textContent : '';
-
-          // Показуємо модальне вікно
-          editProfileModal.style.display = 'block';
+  
+          
+          editProfileModal.show();
         } else {
           console.error("Не вдалося знайти елементи для редагування профілю.");
         }
-      }
-    });
-  }
-
-  // Закриваємо модальне вікно для редагування профілю
-  if (editProfileCloseBtn) {
-    editProfileCloseBtn.addEventListener('click', () => {
-      editProfileModal.style.display = 'none';
-    });
-  }
-  
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
-  // Закриваємо будь-яке модальне вікно, якщо користувач натискає за межами вікна
-  window.onclick = function (event) {
-    if (event.target === editProfileModal) {
-      editProfileModal.style.display = 'none';
-    } else if (event.target === appointmentModal) {
-      appointmentModal.style.display = 'none';
+      });
     }
-  };
+  
+    
+    editProfileModalElement.addEventListener('shown.bs.modal', () => {
+      document.getElementById('editFullName').focus();
+    });
+  });
 
   document.getElementById('editProfileForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -167,16 +148,12 @@ window.onload = async () => {
       photoBase64 = await convertToBase64(photoInput);
     }
   
-    // Формуємо об'єкт даних без specialty
     const data = {
       fullName,
       email,
       phone,
-      ...(photoBase64 && { photo: photoBase64 }), // Додаємо photo тільки, якщо воно є
+      ...(photoBase64 && { photo: photoBase64 }),
     };
-  
-    console.log("Початок оновлення профілю");
-    console.log("Нові дані:", data);
   
     try {
       const response = await fetch('/api/doctor/update-profile', {
@@ -191,17 +168,26 @@ window.onload = async () => {
       const result = await response.json();
       if (response.ok) {
         alert('Профіль успішно оновлено');
-        window.location.reload(); // Оновлюємо сторінку для відображення змін
+        window.location.reload(); 
       } else {
-        console.error('Помилка сервера:', result.message);
         alert(result.message || 'Помилка при оновленні профілю');
       }
     } catch (error) {
       console.error('Помилка при оновленні профілю:', error);
     }
   });
-  
-  // Функція для отримання записів до лікаря
+
+  // Функція для конвертації файлу у base64
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // Функція для отримання записів до лікаря (календар)
   async function loadAppointments() {
     try {
       const response = await fetch('/api/doctor/appointments', {

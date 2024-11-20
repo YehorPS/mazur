@@ -1,4 +1,4 @@
-// controllers/appointmentController.js
+
 const Appointment = require('../models/Appointment');
 const User = require('../models/User');
 

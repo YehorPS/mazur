@@ -8,14 +8,14 @@ exports.verifyToken = async (req, res, next) => {
   }
 
   try {
-    const decodedToken = jwt.verify(token, 'secretKey'); // Використовуйте свій секретний ключ
+    const decodedToken = jwt.verify(token, 'secretKey'); 
     const user = await User.findById(decodedToken.id);
 
     if (!user) {
       return res.status(404).json({ message: 'Користувача не знайдено' });
     }
 
-    req.user = user; // Додаємо користувача до запиту
+    req.user = user; 
     console.log('Додано користувача до req.user:', req.user);
     next();
   } catch (error) {

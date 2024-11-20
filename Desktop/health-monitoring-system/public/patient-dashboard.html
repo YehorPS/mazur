@@ -4,87 +4,95 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Кабінет Пацієнта</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="/css/patient-dashboard.css">
 </head>
-<body>
-  <div class="container">
+<body style="background-color: #F8F9FA; font-family: 'Roboto', sans-serif;">
+  <div class="container mt-5">
     <!-- Кабінет пацієнта -->
-    <div class="patient-profile">
-      <h1><span id="patientName"></span></h1>
-      <img id="patientPhoto" src="/default-photo.jpg" alt="Фото пацієнта" class="profile-photo">
-      <div class="patient-details">
-        <p>Email: <span id="patientEmail"></span></p>
-        <p>Телефон: <span id="patientPhone"></span></p>
-        <p>Дата народження: <span id="patientDOB"></span></p>
-        <p>Звання: <span id="patientRank"></span></p>
+    <div class="patient-profile card shadow-lg p-4 mb-5">
+      <div class="row align-items-center">
+        <div class="col-md-3 text-center">
+          <img id="patientPhoto" src="/default-photo.jpg" alt="Фото пацієнта" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+        </div>
+        <div class="col-md-9">
+          <h2 id="patientName" class="text-primary"><i class="fas fa-user"></i> Пацієнт: Ім'я Пацієнта</h2>
+          <p><strong><i class="fas fa-envelope"></i> Email:</strong> <span id="patientEmail">email@example.com</span></p>
+          <p><strong><i class="fas fa-phone"></i> Телефон:</strong> <span id="patientPhone">380XXXXXXXXX</span></p>
+          <p><strong><i class="fas fa-calendar-alt"></i> Дата народження:</strong> <span id="patientDOB">01.01.1970</span></p>
+          <p><strong><i class="fas fa-user-tag"></i> Звання:</strong> <span id="patientRank">Звання Пацієнта</span></p>
+          <button id="editProfileBtn" class="btn btn-outline-primary mt-3"><i class="fas fa-edit"></i> Редагувати профіль</button>
+        </div>
       </div>
-      <button id="editProfileBtn" class="edit-btn">Редагувати профіль</button>
     </div>
 
-    <!-- Історія хвороб -->
-    <div class="medical-history">
-      <h2>Історія хвороб</h2>
-      <ul id="historyList" class="history-list"></ul>
-    </div>
+  
 
     <!-- Запис до лікаря -->
-    <div class="appointments">
-      <h2>Запис до лікаря</h2>
+    <div class="appointments card shadow-lg p-4">
+      <h2 class="text-primary mb-4"><i class="fas fa-calendar-plus"></i> Запис до Лікаря</h2>
       <form id="appointmentForm" class="appointment-form">
-        <label for="doctorSelect">Оберіть лікаря:</label>
-        <select id="doctorSelect" required></select>
-        <label for="appointmentDate">Дата та час прийому:</label>
-        <input type="datetime-local" id="appointmentDate" required>
-        <label for="reason">Причина:</label>
-        <textarea id="reason" required></textarea>
-        <button type="submit" class="submit-btn">Записатися</button>
+        <div class="mb-3">
+          <label for="doctorSelect" class="form-label">Оберіть лікаря:</label>
+          <select id="doctorSelect" class="form-select" required></select>
+        </div>
+        <div class="mb-3">
+          <label for="appointmentDate" class="form-label">Дата та час прийому:</label>
+          <input type="datetime-local" id="appointmentDate" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="reason" class="form-label">Причина:</label>
+          <textarea id="reason" class="form-control" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save"></i> Записатися</button>
       </form>
     </div>
 
-    <button onclick="window.location.href='/login.html'" class="logout-btn">Вихід</button>
+    <div class="text-center mt-5">
+      <button onclick="window.location.href='/login.html'" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Вихід</button>
+    </div>
   </div>
 
   <!-- Модальне вікно для редагування профілю -->
-  <div id="editProfileModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h2>Редагувати профіль</h2>
-      <form id="editProfileForm">
-        <label for="editFullName">Повне ім'я:</label>
-        <input type="text" id="editFullName">
-        <label for="editPhone">Телефон:</label>
-        <input type="text" id="editPhone">
-        <label for="editDOB">Дата народження:</label>
-        <input type="date" id="editDOB">
-        <label for="editRank">Звання:</label>
-        <input type="text" id="editRank">
-        <label for="photoInput">Фото:</label>
-        <input type="file" id="photoInput">
-        <button type="submit" class="save-btn">Зберегти зміни</button>
-      </form>
+  <div id="editProfileModal" class="modal fade" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel"><i class="fas fa-user-edit"></i> Редагувати Профіль</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProfileForm">
+            <div class="mb-3">
+              <label for="editFullName" class="form-label">Повне ім'я:</label>
+              <input type="text" class="form-control" id="editFullName" required>
+            </div>
+            <div class="mb-3">
+              <label for="editPhone" class="form-label">Телефон:</label>
+              <input type="text" class="form-control" id="editPhone" required>
+            </div>
+            <div class="mb-3">
+              <label for="editDOB" class="form-label">Дата народження:</label>
+              <input type="date" class="form-control" id="editDOB" required>
+            </div>
+            <div class="mb-3">
+              <label for="editRank" class="form-label">Звання:</label>
+              <input type="text" class="form-control" id="editRank">
+            </div>
+            <div class="mb-3">
+              <label for="photoInput" class="form-label">Фото:</label>
+              <input type="file" class="form-control" id="photoInput">
+            </div>
+            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save"></i> Зберегти Зміни</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-<!-- Модальне вікно для створення профілю -->
-<div id="createProfileModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn">&times;</span>
-    <h2>Створити профіль</h2>
-    <form id="createProfileForm">
-      <label for="createFullName">Повне ім'я:</label>
-      <input type="text" id="createFullName" required>
-      <label for="createPhone">Телефон:</label>
-      <input type="text" id="createPhone" required>
-      <label for="createDOB">Дата народження:</label>
-      <input type="date" id="createDOB" required>
-      <label for="createRank">Звання:</label>
-      <input type="text" id="createRank">
-      <label for="createPhotoInput">Фото:</label>
-      <input type="file" id="createPhotoInput">
-      <button type="submit">Зберегти</button>
-    </form>
-  </div>
-</div>
 
-  <script src="js/patient-dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script src="/js/patient-dashboard.js"></script>
 </body>
 </html>

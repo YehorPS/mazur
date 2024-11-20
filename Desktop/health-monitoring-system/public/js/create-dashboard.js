@@ -23,7 +23,7 @@ window.onload = () => {
       const data = await response.json();
       if (response.ok) {
         alert('Медична картка створена успішно!');
-        window.location.href = `/profile.html?id=${patientId}`; // Повертаємось до профілю пацієнта
+        window.location.href = `/profile.html?id=${patientId}`; 
       } else {
         alert(data.message || 'Щось пішло не так');
       }

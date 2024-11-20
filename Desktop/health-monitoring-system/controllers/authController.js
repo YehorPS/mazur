@@ -1,4 +1,4 @@
-// controllers/authController.js
+
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
@@ -32,10 +32,10 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Невірний пароль' });
     }
 
-    // Генерация токена с id и ролью пользователя
+    
     const token = jwt.sign({ id: user._id, role: user.role }, 'secretKey', { expiresIn: '1h' });
 
-    res.json({ token }); // Отправляем токен
+    res.json({ token }); 
   } catch (error) {
     res.status(500).json({ message: 'Щось пішло не так' });
   }

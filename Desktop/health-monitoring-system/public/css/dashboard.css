@@ -1,4 +1,4 @@
-/* Загальні стилі для сторінки */
+
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f4f6f9;
@@ -8,10 +8,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-/* Контейнер */
+
 .container {
   width: 80%;
   max-width: 1200px;
@@ -22,7 +22,7 @@ body {
   margin-top: 50px;
 }
 
-/* Стилі для профілю лікаря */
+
 .doctor-profile {
   background-color: #ffffff;
   padding: 20px;
@@ -64,6 +64,7 @@ body {
   color: #555;
 }
 
+
 button {
   background-color: #27ae60;
   color: white;
@@ -79,7 +80,7 @@ button:hover {
   background-color: #2ecc71;
 }
 
-/* Стилі для мобільних пристроїв */
+
 @media (max-width: 768px) {
   .doctor-profile {
     flex-direction: column;
@@ -98,56 +99,7 @@ button:hover {
   }
 }
 
-/* Стилі для профілю лікаря */
-.doctor-profile {
-  display: flex;
-  align-items: center;
-  background-color: #ecf0f1;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 30px;
-}
 
-.doctor-profile img {
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  margin-right: 30px;
-}
-
-.doctor-profile-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.doctor-profile-info p {
-  font-size: 18px;
-  margin: 5px 0;
-}
-
-button {
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-button:hover {
-  background-color: #2ecc71;
-  transform: translateY(-2px);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-/* Список пацієнтів */
 .patients {
   margin-bottom: 30px;
 }
@@ -170,7 +122,7 @@ button:active {
   background-color: #ecf0f1;
 }
 
-/* Календар */
+
 #calendar {
   margin-top: 50px;
   background: #ffffff;
@@ -197,27 +149,25 @@ button:active {
   background-color: #f0f3f4;
 }
 
-/* Модальне вікно для редагування профілю */
-.modal {
-  display: none; /* Спочатку приховане */
-  position: fixed;
-  z-index: 2;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Темний фон */
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
 }
 
 .modal-content {
   background-color: #fff;
-  margin: 10% auto;
-  padding: 20px 40px;
   border-radius: 12px;
-  width: 80%;
-  max-width: 500px;
-  position: relative;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Покращена тінь */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1050 !important; 
+}
+
+.modal-backdrop.show {
+  opacity: 0.2 !important; 
+  z-index: 1040 !important;
+}
+
+.modal-header, .modal-body, .modal-footer {
+  padding: 20px;
 }
 
 .close-btn {
@@ -235,43 +185,7 @@ button:active {
   color: #555;
 }
 
-.modal img {
-  border-radius: 50%;
-  margin-bottom: 15px;
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-}
 
-/* Модальне вікно для інформації про запис */
-#appointmentModal .modal-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-#appointmentModal .appointment-photo {
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  margin-bottom: 20px;
-}
-
-#appointmentModal .appointment-info h2 {
-  margin: 10px 0;
-  font-size: 1.8em;
-  color: #333;
-}
-
-#appointmentModal .appointment-info p {
-  font-size: 1em;
-  color: #666;
-  margin: 5px 0;
-}
-
-/* Поля вводу для редагування профілю */
 input {
   width: 100%;
   padding: 10px;
@@ -294,7 +208,7 @@ button[type="submit"]:hover {
   background-color: #2980b9;
 }
 
-/* Стилі для таблиці пацієнтів */
+
 .styled-table {
   width: 100%;
   border-collapse: collapse;
@@ -342,4 +256,15 @@ button[type="submit"]:hover {
 
 .view-profile-btn:hover {
   background-color: #2980b9;
+}
+
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.5) !important; 
+  z-index: 1050;
+}
+
+.modal-backdrop {
+  opacity: 0.4 !important;
+  z-index: 1040 !important; 
 }

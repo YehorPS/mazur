@@ -1,4 +1,4 @@
-// controllers/medicalRecordController.js
+
 const MedicalRecord = require('../models/MedicalRecord');
 const User = require('../models/User');
 
