@@ -22,10 +22,18 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Підключення до MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+ 
+})
+  .then(() => console.log('Підключено до MongoDB Atlas'))
+  .catch((err) => {
+    console.error('Помилка підключення до MongoDB Atlas:', err);
+    process.exit(1); // Вихід у разі невдалого підключення
+  });
+  mongoose.connection.on('connected', () => console.log('MongoDB підключено'));
+mongoose.connection.on('error', (err) => console.error('Помилка MongoDB:', err));
 // Використовуємо маршрути для API
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/medical-records', medicalRecordRoutes);
@@ -45,7 +53,9 @@ app.get('/login', (req, res) => {
 app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'hello.html'));
+});
 app.get('/profile', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });

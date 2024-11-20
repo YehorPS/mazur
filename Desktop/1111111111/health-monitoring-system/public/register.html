@@ -4,7 +4,82 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Реєстрація</title>
-  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    body {
+      background: linear-gradient(to right, #67b26f, #4ca2cd);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      transition: transform 0.3s ease-in-out;
+    }
+    .container:hover {
+      transform: translateY(-10px);
+    }
+
+    .register-form {
+      display: flex;
+      flex-direction: column;
+    }
+    .register-form h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .register-form input, .register-form select {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .register-form button {
+      background-color: #4ca2cd;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .register-form button:hover {
+      background-color: #67b26f;
+      transform: translateY(-2px);
+    }
+    .register-form button:active {
+      transform: translateY(0);
+    }
+    .register-form p {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .register-form p a {
+      color: #4ca2cd;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .register-form p a:hover {
+      color: #67b26f;
+    }
+    .error-message {
+      color: red;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
