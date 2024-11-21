@@ -1,0 +1,18 @@
+<html lang="en">
+  <%- include('./partials/head');%>
+  <style>
+    *{
+      text-align: center;
+    }
+  </style>
+    <body>
+      <div class="container">
+        <h1>Всі підрозділи</h1>
+        <ul>
+          <% for (const collection of collections) { %>
+            <li><a class="collection"href="/api/collections/<%= collection.name %>"><%= collection.name.toUpperCase() %></a></li>
+          <% } %>
+        </ul>
+      </div>
+    </body>
+</html>

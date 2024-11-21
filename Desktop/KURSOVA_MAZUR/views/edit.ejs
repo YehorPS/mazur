@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head');%>
+  <%- include('./partials/styleEdit');%>
+  <body>
+    <div class="form">
+      <h1>Edit Document (ID: <%= document._id %>)</h1>
+      <form action="/api/collections/<%= collectionName %>/update" method="POST">
+        <input type="hidden" name="id" value="<%= document._id %>">
+        <% for (const prop in document) { %>
+          <label for="<%= prop %>"><%= prop %></label>
+          <input type="text" id="<%= prop %>" name="<%= prop %>" value="<%= document[prop] %>">
+          <br />
+        <% } %>
+        <button class="btn-success">Update Document</button>
+      </form>
+    </div>
+  </body>
+</html>

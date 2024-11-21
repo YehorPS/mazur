@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head');%>
+  <%- include('./partials/styleUnit');%>
+  <body>
+    <div>
+      <a id="to_collections" href="/api/collections">Повернутися назад</a>
+      <h1>Нормативи: <%= title.toUpperCase() %></h1>
+      <div class="collections">
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <% for (const prop in documents[0]) { %>
+                  <% if (prop !== '_id') { %>
+                    <th><%= prop %></th>
+                  <% } %>
+                <% } %>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (const document of documents) { %>
+                <tr>
+                  <% for (const prop in document) { %>
+                    <% if (prop !== '_id') { %>
+                      <td><%= document[prop] %></td>
+                    <% } %>
+                  <% } %>
+                  <td>
+                    <span class="edit-trigger" data-document-id="<%= document._id %>"></span>
+                    <span class="delete-trigger" data-document-id="<%= document._id %>"></span>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        <div class="buttons">
+          <form action="/api/collections/<%= title %>/add" method="POST">
+            <%- include('./partials/input');%>
+            <button class="btn-success">Add Document</button>
+          </form>
+          <form action="/api/collections/<%= title %>/export" method="GET">
+            <button>Save file in xlsx</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      const deleteTriggers = document.querySelectorAll('.delete-trigger');
+      const editTriggers = document.querySelectorAll('.edit-trigger');
+      
+      deleteTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (event) => {
+          const documentId = event.target.dataset.documentId;
+          const collectionName = '<%= title %>';
+      
+          // Create a form element dynamically
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = `/api/collections/${collectionName}/delete`;
+      
+          // Add a hidden input field with document ID
+          const hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.name = 'id';
+          hiddenInput.value = documentId;
+          form.appendChild(hiddenInput);
+      
+          // Submit the form programmatically
+          document.body.appendChild(form);
+          form.submit();
+          document.body.removeChild(form); // Remove the temporary form
+        });
+      });      
+
+      editTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (event) => {
+          const documentId = event.target.dataset.documentId;
+          const collectionName = '<%= title %>';
+          window.location.href = `/api/collections/${collectionName}/edit?id=${documentId}`;
+        });
+      });
+    </script>
+  </body>
+</html>
