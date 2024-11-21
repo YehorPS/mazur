@@ -130,6 +130,7 @@ const updatePatientProfile = async (req, res) => {
       if (phone) user.phone = phone;
       if (email) user.email = email;
       if (photo) user.photo = photo;
+      if (rank) user.rank = rank;
       await user.save();
     }
 
